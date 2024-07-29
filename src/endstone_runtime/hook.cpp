@@ -18,7 +18,9 @@
 #include <system_error>
 #include <unordered_map>
 
-#include <funchook/funchook.h>
+// #include <funchook/funchook.h>
+#include <Windows.h>
+
 #include <spdlog/spdlog.h>
 
 namespace endstone::detail::hook {
@@ -45,7 +47,18 @@ void *get_original(const std::string &name)
     }
     return it->second;
 }
-
+using FuncPtr = void *;
+enum Priority : int {
+    PriorityHighest = 0,
+    PriorityHigh = 100,
+    PriorityNormal = 200,
+    PriorityLow = 300,
+    PriorityLowest = 400,
+};
+int (*pl_hook)(FuncPtr target, FuncPtr detour, FuncPtr *originalFunc,
+               Priority priority) = (decltype(pl_hook))GetProcAddress(GetModuleHandleA("PreLoader.dll"), "pl_hook");
+bool (*pl_unhook)(FuncPtr target,
+                  FuncPtr detour) = (decltype(pl_unhook))GetProcAddress(GetModuleHandleA("PreLoader.dll"), "pl_unhook");
 void install()
 {
     const auto &detours = get_detours();
@@ -57,18 +70,20 @@ void install()
             void *detour = it->second;
             void *original = target;
 
-            funchook_t *hook = funchook_create();
-            int status;
-            status = funchook_prepare(hook, &original, detour);
-            if (status != 0) {
-                throw std::system_error(status, hook_error_category());
-            }
+            // funchook_t *hook = funchook_create();
+            // int status;
+            // status = funchook_prepare(hook, &original, detour);
+            // if (status != 0) {
+            //     throw std::system_error(status, hook_error_category());
+            // }
 
-            status = funchook_install(hook, 0);
-            if (status != 0) {
-                throw std::system_error(status, hook_error_category());
-            }
-
+            // status = funchook_install(hook, 0);
+            // if (status != 0) {
+            //     throw std::system_error(status, hook_error_category());
+            // }
+            FuncPtr originalFunc;
+            pl_hook(original, detour, &originalFunc, PriorityNormal);
+            original = originalFunc;
             spdlog::debug("{}: {} -> {} -> {}", name, target, detour, original);
             gOriginalsByDetour.emplace(detour, original);
             gOriginalsByName.emplace(name, original);
@@ -91,32 +106,32 @@ const std::error_category &hook_error_category()
         [[nodiscard]] std::string message(int err_val) const override
         {
             switch (err_val) {
-            case FUNCHOOK_ERROR_INTERNAL_ERROR:
-                return "FUNCHOOK_ERROR_INTERNAL_ERROR";
-            case FUNCHOOK_ERROR_SUCCESS:
-                return "FUNCHOOK_ERROR_SUCCESS";
-            case FUNCHOOK_ERROR_OUT_OF_MEMORY:
-                return "FUNCHOOK_ERROR_OUT_OF_MEMORY";
-            case FUNCHOOK_ERROR_ALREADY_INSTALLED:
-                return "FUNCHOOK_ERROR_ALREADY_INSTALLED";
-            case FUNCHOOK_ERROR_DISASSEMBLY:
-                return "FUNCHOOK_ERROR_DISASSEMBLY";
-            case FUNCHOOK_ERROR_IP_RELATIVE_OFFSET:
-                return "FUNCHOOK_ERROR_IP_RELATIVE_OFFSET";
-            case FUNCHOOK_ERROR_CANNOT_FIX_IP_RELATIVE:
-                return "FUNCHOOK_ERROR_CANNOT_FIX_IP_RELATIVE";
-            case FUNCHOOK_ERROR_FOUND_BACK_JUMP:
-                return "FUNCHOOK_ERROR_FOUND_BACK_JUMP";
-            case FUNCHOOK_ERROR_TOO_SHORT_INSTRUCTIONS:
-                return "FUNCHOOK_ERROR_TOO_SHORT_INSTRUCTIONS";
-            case FUNCHOOK_ERROR_MEMORY_ALLOCATION:
-                return "FUNCHOOK_ERROR_MEMORY_ALLOCATION";
-            case FUNCHOOK_ERROR_MEMORY_FUNCTION:
-                return "FUNCHOOK_ERROR_MEMORY_FUNCTION";
-            case FUNCHOOK_ERROR_NOT_INSTALLED:
-                return "FUNCHOOK_ERROR_NOT_INSTALLED";
-            case FUNCHOOK_ERROR_NO_AVAILABLE_REGISTERS:
-                return "FUNCHOOK_ERROR_NO_AVAILABLE_REGISTERS";
+            // case FUNCHOOK_ERROR_INTERNAL_ERROR:
+            //     return "FUNCHOOK_ERROR_INTERNAL_ERROR";
+            // case FUNCHOOK_ERROR_SUCCESS:
+            //     return "FUNCHOOK_ERROR_SUCCESS";
+            // case FUNCHOOK_ERROR_OUT_OF_MEMORY:
+            //     return "FUNCHOOK_ERROR_OUT_OF_MEMORY";
+            // case FUNCHOOK_ERROR_ALREADY_INSTALLED:
+            //     return "FUNCHOOK_ERROR_ALREADY_INSTALLED";
+            // case FUNCHOOK_ERROR_DISASSEMBLY:
+            //     return "FUNCHOOK_ERROR_DISASSEMBLY";
+            // case FUNCHOOK_ERROR_IP_RELATIVE_OFFSET:
+            //     return "FUNCHOOK_ERROR_IP_RELATIVE_OFFSET";
+            // case FUNCHOOK_ERROR_CANNOT_FIX_IP_RELATIVE:
+            //     return "FUNCHOOK_ERROR_CANNOT_FIX_IP_RELATIVE";
+            // case FUNCHOOK_ERROR_FOUND_BACK_JUMP:
+            //     return "FUNCHOOK_ERROR_FOUND_BACK_JUMP";
+            // case FUNCHOOK_ERROR_TOO_SHORT_INSTRUCTIONS:
+            //     return "FUNCHOOK_ERROR_TOO_SHORT_INSTRUCTIONS";
+            // case FUNCHOOK_ERROR_MEMORY_ALLOCATION:
+            //     return "FUNCHOOK_ERROR_MEMORY_ALLOCATION";
+            // case FUNCHOOK_ERROR_MEMORY_FUNCTION:
+            //     return "FUNCHOOK_ERROR_MEMORY_FUNCTION";
+            // case FUNCHOOK_ERROR_NOT_INSTALLED:
+            //     return "FUNCHOOK_ERROR_NOT_INSTALLED";
+            // case FUNCHOOK_ERROR_NO_AVAILABLE_REGISTERS:
+            //     return "FUNCHOOK_ERROR_NO_AVAILABLE_REGISTERS";
             default:
                 return "Unknown error.";
             }
