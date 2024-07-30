@@ -74,6 +74,7 @@ public:
 
     // Player
     [[nodiscard]] UUID getUniqueId() const override;
+    [[nodiscard]] std::string getXuid() const override;
     [[nodiscard]] const SocketAddress &getAddress() const override;
     void sendPopup(std::string message) const override;
     void sendTip(std::string message) const override;
@@ -123,6 +124,7 @@ private:
 
     ::Player &player_;
     UUID uuid_;
+    std::string xuid_;
     SocketAddress address_;
     PermissibleBase perm_;
     std::unique_ptr<EndstonePlayerInventory> inventory_;
