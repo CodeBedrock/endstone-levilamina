@@ -140,7 +140,7 @@ Inherits the following classes: [endstone::Mob](classendstone_1_1Mob.md)
 | virtual void | [**closeForm**](#function-closeform) () = 0<br>_Closes the forms that are currently open for the player._  |
 | virtual const [**SocketAddress**](classendstone_1_1SocketAddress.md) & | [**getAddress**](#function-getaddress) () const = 0<br>_Gets the socket address of this player._  |
 | virtual bool | [**getAllowFlight**](#function-getallowflight) () const = 0<br>_Determines if the_ [_**Player**_](classendstone_1_1Player.md) _is allowed to fly via jump key double-tap._ |
-| virtual [**endstone::UUID**](classendstone_1_1UUID.md) | [**getDeviceId**](#function-getdeviceid) () const = 0<br>_Gets the player's current device id._  |
+| virtual std::string | [**getDeviceId**](#function-getdeviceid) () const = 0<br>_Gets the player's current device id._  |
 | virtual std::string | [**getDeviceOS**](#function-getdeviceos) () const = 0<br>_Gets the player's current device's operation system (OS)._  |
 | virtual int | [**getExpLevel**](#function-getexplevel) () const = 0<br>_Gets the players current experience level._  |
 | virtual float | [**getExpProgress**](#function-getexpprogress) () const = 0<br>_Gets the players current experience progress towards the next level._  |
@@ -149,6 +149,7 @@ Inherits the following classes: [endstone::Mob](classendstone_1_1Mob.md)
 | virtual [**PlayerInventory**](classendstone_1_1PlayerInventory.md) & | [**getInventory**](#function-getinventory) () const = 0<br>_Get the player's inventory._  |
 | virtual std::string | [**getLocale**](#function-getlocale) () const = 0<br>_Gets the player's current locale._  |
 | virtual std::chrono::milliseconds | [**getPing**](#function-getping) () const = 0<br>_Gets the player's average ping._  |
+| virtual [**Scoreboard**](classendstone_1_1Scoreboard.md) & | [**getScoreboard**](#function-getscoreboard) () const = 0<br>_Gets the_ [_**Scoreboard**_](classendstone_1_1Scoreboard.md) _displayed to this player._ |
 | virtual const [**Skin**](classendstone_1_1Skin.md) & | [**getSkin**](#function-getskin) () const = 0<br>_Gets the player's skin._  |
 | virtual int | [**getTotalExp**](#function-gettotalexp) () const = 0<br>_Gets the players total experience points._  |
 | virtual [**endstone::UUID**](classendstone_1_1UUID.md) | [**getUniqueId**](#function-getuniqueid) () const = 0<br>_Returns the_ [_**UUID**_](classendstone_1_1UUID.md) _of this player._ |
@@ -173,6 +174,7 @@ Inherits the following classes: [endstone::Mob](classendstone_1_1Mob.md)
 | virtual void | [**setFlySpeed**](#function-setflyspeed) (float value) const = 0<br> |
 | virtual void | [**setFlying**](#function-setflying) (bool value) = 0<br>_Makes this player start or stop flying._  |
 | virtual void | [**setGameMode**](#function-setgamemode) (GameMode mode) = 0<br>_Sets this player's current GameMode._  |
+| virtual void | [**setScoreboard**](#function-setscoreboard) ([**Scoreboard**](classendstone_1_1Scoreboard.md) & scoreboard) = 0<br> |
 | virtual void | [**setWalkSpeed**](#function-setwalkspeed) (float value) const = 0<br> |
 | virtual void | [**transfer**](#function-transfer) (std::string address, int port) const = 0<br>_Transfers the player to another server._  |
 | virtual void | [**updateCommands**](#function-updatecommands) () const = 0<br>_Send the list of commands to the client._  |
@@ -210,6 +212,7 @@ See [endstone::Actor](classendstone_1_1Actor.md)
 |  [**Actor**](classendstone_1_1Actor.md) & | [**operator=**](classendstone_1_1Actor.md#function-operator) (const [**Actor**](classendstone_1_1Actor.md) &) = delete<br> |
 |  [**Actor**](classendstone_1_1Actor.md) & | [**operator=**](classendstone_1_1Actor.md#function-operator_1) ([**Actor**](classendstone_1_1Actor.md) &&) = delete<br> |
 | virtual void | [**setRotation**](classendstone_1_1Actor.md#function-setrotation) (float yaw, float pitch) = 0<br> |
+| virtual void | [**teleport**](classendstone_1_1Actor.md#function-teleport) ([**Location**](classendstone_1_1Location.md) location) = 0<br> |
 |   | [**~Actor**](classendstone_1_1Actor.md#function-actor) () override<br> |
 
 
@@ -532,7 +535,7 @@ True if the player is allowed to fly.
 
 _Gets the player's current device id._ 
 ```C++
-virtual endstone::UUID endstone::Player::getDeviceId () const = 0
+virtual std::string endstone::Player::getDeviceId () const = 0
 ```
 
 
@@ -745,6 +748,31 @@ virtual std::chrono::milliseconds endstone::Player::getPing () const = 0
 **Returns:**
 
 player ping 
+
+
+
+
+
+        
+
+<hr>
+
+
+
+### function getScoreboard 
+
+_Gets the_ [_**Scoreboard**_](classendstone_1_1Scoreboard.md) _displayed to this player._
+```C++
+virtual Scoreboard & endstone::Player::getScoreboard () const = 0
+```
+
+
+
+
+
+**Returns:**
+
+The current scoreboard seen by this player 
 
 
 
@@ -1370,6 +1398,36 @@ virtual void endstone::Player::setGameMode (
 
 
 * `mode` New game mode 
+
+
+
+
+        
+
+<hr>
+
+
+
+### function setScoreboard 
+
+
+```C++
+virtual void endstone::Player::setScoreboard (
+    Scoreboard & scoreboard
+) = 0
+```
+
+
+
+@breif Sets the player's visible [**Scoreboard**](classendstone_1_1Scoreboard.md).
+
+
+
+
+**Parameters:**
+
+
+* `scoreboard` New [**Scoreboard**](classendstone_1_1Scoreboard.md) for the player 
 
 
 

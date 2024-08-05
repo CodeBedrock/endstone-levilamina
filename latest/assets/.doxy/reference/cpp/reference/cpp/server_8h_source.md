@@ -24,6 +24,7 @@
 
 #pragma once
 
+#include <chrono>
 #include <memory>
 #include <string>
 #include <string_view>
@@ -68,9 +69,7 @@ public:
 
     [[nodiscard]] virtual Scheduler &getScheduler() const = 0;
 
-    [[nodiscard]] virtual std::vector<Level *> getLevels() const = 0;
-
-    [[nodiscard]] virtual Level *getLevel(std::string name) const = 0;
+    [[nodiscard]] virtual Level *getLevel() const = 0;
 
     [[nodiscard]] virtual std::vector<Player *> getOnlinePlayers() const = 0;
 
@@ -81,6 +80,8 @@ public:
     [[nodiscard]] virtual Player *getPlayer(endstone::UUID id) const = 0;
 
     [[nodiscard]] virtual Player *getPlayer(std::string name) const = 0;
+
+    virtual void shutdown() = 0;
 
     virtual void broadcast(const std::string &message, const std::string &permission) const = 0;
 
@@ -95,6 +96,10 @@ public:
     [[nodiscard]] virtual bool isPrimaryThread() const = 0;
 
     [[nodiscard]] virtual Scoreboard *getScoreboard() const = 0;
+
+    [[nodiscard]] virtual std::shared_ptr<Scoreboard> getNewScoreboard() = 0;
+
+    [[nodiscard]] virtual std::chrono::system_clock::time_point getStartTime() = 0;
 
     inline static const std::string BroadcastChannelAdmin = "endstone.broadcast.admin";
 

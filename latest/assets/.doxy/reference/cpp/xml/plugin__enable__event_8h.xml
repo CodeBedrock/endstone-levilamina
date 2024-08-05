@@ -81,19 +81,21 @@
       <node id="40">
         <label>endstone/server.h</label>
         <link refid="server_8h_source"/>
+        <childnode refid="41" relation="include">
+        </childnode>
         <childnode refid="15" relation="include">
         </childnode>
         <childnode refid="3" relation="include">
         </childnode>
-        <childnode refid="41" relation="include">
+        <childnode refid="42" relation="include">
         </childnode>
         <childnode refid="13" relation="include">
         </childnode>
-        <childnode refid="42" relation="include">
+        <childnode refid="43" relation="include">
         </childnode>
         <childnode refid="29" relation="include">
         </childnode>
-        <childnode refid="43" relation="include">
+        <childnode refid="44" relation="include">
         </childnode>
         <childnode refid="66" relation="include">
         </childnode>
@@ -145,10 +147,10 @@
         <childnode refid="39" relation="include">
         </childnode>
       </node>
-      <node id="43">
+      <node id="44">
         <label>endstone/player.h</label>
         <link refid="player_8h_source"/>
-        <childnode refid="44" relation="include">
+        <childnode refid="41" relation="include">
         </childnode>
         <childnode refid="45" relation="include">
         </childnode>
@@ -169,6 +171,8 @@
         <childnode refid="62" relation="include">
         </childnode>
         <childnode refid="64" relation="include">
+        </childnode>
+        <childnode refid="66" relation="include">
         </childnode>
       </node>
       <node id="72">
@@ -311,7 +315,7 @@
         </childnode>
       </node>
       <node id="66">
-        <label>endstone/scoreboard/scoreboard.h</label>
+        <label>scoreboard/scoreboard.h</label>
         <link refid="scoreboard_8h_source"/>
         <childnode refid="3" relation="include">
         </childnode>
@@ -336,7 +340,7 @@
         <childnode refid="3" relation="include">
         </childnode>
       </node>
-      <node id="42">
+      <node id="43">
         <label>endstone/level/level.h</label>
         <link refid="level_8h_source"/>
         <childnode refid="3" relation="include">
@@ -354,7 +358,7 @@
         <childnode refid="16" relation="include">
         </childnode>
       </node>
-      <node id="41">
+      <node id="42">
         <label>string_view</label>
       </node>
       <node id="56">
@@ -551,7 +555,7 @@
         <childnode refid="49" relation="include">
         </childnode>
       </node>
-      <node id="44">
+      <node id="41">
         <label>chrono</label>
       </node>
       <node id="70">

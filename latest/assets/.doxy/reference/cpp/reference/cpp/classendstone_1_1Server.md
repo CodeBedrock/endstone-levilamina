@@ -65,23 +65,25 @@ _Represents a server implementation._
 |  void | [**broadcastMessage**](#function-broadcastmessage-22) (const fmt::format\_string&lt; Args... &gt; format, Args &&... args) const<br> |
 | virtual bool | [**dispatchCommand**](#function-dispatchcommand) ([**CommandSender**](classendstone_1_1CommandSender.md) & sender, std::string command) const = 0<br>_Dispatches a command on this server, and executes it if found._  |
 | virtual [**ConsoleCommandSender**](classendstone_1_1ConsoleCommandSender.md) & | [**getCommandSender**](#function-getcommandsender) () const = 0<br>_Gets a_ [_**CommandSender**_](classendstone_1_1CommandSender.md) _for this server._ |
-| virtual [**Level**](classendstone_1_1Level.md) \* | [**getLevel**](#function-getlevel) (std::string name) const = 0<br>_Gets the level with the given name._  |
-| virtual std::vector&lt; [**Level**](classendstone_1_1Level.md) \* &gt; | [**getLevels**](#function-getlevels) () const = 0<br>_Gets a list of all levels on this server._  |
+| virtual [**Level**](classendstone_1_1Level.md) \* | [**getLevel**](#function-getlevel) () const = 0<br>_Gets the server level._  |
 | virtual [**Logger**](classendstone_1_1Logger.md) & | [**getLogger**](#function-getlogger) () const = 0<br>_Returns the primary logger associated with this server instance._  |
 | virtual int | [**getMaxPlayers**](#function-getmaxplayers) () const = 0<br>_Get the maximum amount of players which can login to this server._  |
 | virtual std::string | [**getMinecraftVersion**](#function-getminecraftversion) () const = 0<br>_Gets the Minecraft version that this server is running._  |
 | virtual std::string | [**getName**](#function-getname) () const = 0<br>_Gets the name of this server implementation._  |
+| virtual std::shared\_ptr&lt; [**Scoreboard**](classendstone_1_1Scoreboard.md) &gt; | [**getNewScoreboard**](#function-getnewscoreboard) () = 0<br> |
 | virtual std::vector&lt; [**Player**](classendstone_1_1Player.md) \* &gt; | [**getOnlinePlayers**](#function-getonlineplayers) () const = 0<br>_Gets a list of all currently online players._  |
 | virtual [**Player**](classendstone_1_1Player.md) \* | [**getPlayer**](#function-getplayer-12) ([**endstone::UUID**](classendstone_1_1UUID.md) id) const = 0<br>_Gets the player with the given_ [_**UUID**_](classendstone_1_1UUID.md) _._ |
 | virtual [**Player**](classendstone_1_1Player.md) \* | [**getPlayer**](#function-getplayer-22) (std::string name) const = 0<br>_Gets the player with the exact given name, case insensitive._  |
 | virtual [**PluginCommand**](classendstone_1_1PluginCommand.md) \* | [**getPluginCommand**](#function-getplugincommand) (std::string name) const = 0<br>_Gets a_ [_**PluginCommand**_](classendstone_1_1PluginCommand.md) _with the given name or alias._ |
 | virtual [**PluginManager**](classendstone_1_1PluginManager.md) & | [**getPluginManager**](#function-getpluginmanager) () const = 0<br>_Gets the plugin manager for interfacing with plugins._  |
 | virtual [**Scheduler**](classendstone_1_1Scheduler.md) & | [**getScheduler**](#function-getscheduler) () const = 0<br>_Gets the scheduler for managing scheduled events._  |
-| virtual [**Scoreboard**](classendstone_1_1Scoreboard.md) \* | [**getScoreboard**](#function-getscoreboard) () const = 0<br>_Gets the scoreboard._  |
+| virtual [**Scoreboard**](classendstone_1_1Scoreboard.md) \* | [**getScoreboard**](#function-getscoreboard) () const = 0<br>_Gets the primary_ [_**Scoreboard**_](classendstone_1_1Scoreboard.md) _controlled by the server._ |
+| virtual std::chrono::system\_clock::time\_point | [**getStartTime**](#function-getstarttime) () = 0<br>_Gets the start time of the server._  |
 | virtual std::string | [**getVersion**](#function-getversion) () const = 0<br>_Gets the version string of this server implementation._  |
 | virtual bool | [**isPrimaryThread**](#function-isprimarythread) () const = 0<br>_Checks the current thread against the expected primary server thread._  |
 |  [**Server**](classendstone_1_1Server.md) & | [**operator=**](#function-operator) (const [**Server**](classendstone_1_1Server.md) &) = delete<br> |
 | virtual void | [**setMaxPlayers**](#function-setmaxplayers) (int max\_players) = 0<br>_Set the maximum amount of players allowed to be logged in at once._  |
+| virtual void | [**shutdown**](#function-shutdown) () = 0<br>_Shutdowns the server, stopping everything._  |
 | virtual  | [**~Server**](#function-server) () = default<br> |
 
 
@@ -308,43 +310,9 @@ a console command sender
 
 ### function getLevel 
 
-_Gets the level with the given name._ 
+_Gets the server level._ 
 ```C++
-virtual Level * endstone::Server::getLevel (
-    std::string name
-) const = 0
-```
-
-
-
-
-
-**Parameters:**
-
-
-* `name` the name of the level to retrieve 
-
-
-
-**Returns:**
-
-a level with the given name, or nullptr if none exists 
-
-
-
-
-
-        
-
-<hr>
-
-
-
-### function getLevels 
-
-_Gets a list of all levels on this server._ 
-```C++
-virtual std::vector< Level * > endstone::Server::getLevels () const = 0
+virtual Level * endstone::Server::getLevel () const = 0
 ```
 
 
@@ -353,7 +321,7 @@ virtual std::vector< Level * > endstone::Server::getLevels () const = 0
 
 **Returns:**
 
-a list of levels 
+the server level 
 
 
 
@@ -454,6 +422,37 @@ virtual std::string endstone::Server::getName () const = 0
 **Returns:**
 
 name of this server implementation 
+
+
+
+
+
+        
+
+<hr>
+
+
+
+### function getNewScoreboard 
+
+
+```C++
+virtual std::shared_ptr< Scoreboard > endstone::Server::getNewScoreboard () = 0
+```
+
+
+
+Gets a new [**Scoreboard**](classendstone_1_1Scoreboard.md) to be tracked by the server. 
+
+
+This will not be saved by the server and is not affected by the /scoreboard command.
+
+
+
+
+**Returns:**
+
+the newly created [**Scoreboard**](classendstone_1_1Scoreboard.md) 
 
 
 
@@ -644,21 +643,46 @@ a scheduling service for this server
 
 ### function getScoreboard 
 
-_Gets the scoreboard._ 
+_Gets the primary_ [_**Scoreboard**_](classendstone_1_1Scoreboard.md) _controlled by the server._
 ```C++
 virtual Scoreboard * endstone::Server::getScoreboard () const = 0
 ```
 
 
 
-This will only exist after the first level has loaded.
+This [**Scoreboard**](classendstone_1_1Scoreboard.md) is saved by the server, is affected by the /scoreboard command, and is the scoreboard shown by default to players. This will only exist after the level has been loaded.
 
 
 
 
 **Returns:**
 
-the scoreboard. 
+the default server scoreboard 
+
+
+
+
+
+        
+
+<hr>
+
+
+
+### function getStartTime 
+
+_Gets the start time of the server._ 
+```C++
+virtual std::chrono::system_clock::time_point endstone::Server::getStartTime () = 0
+```
+
+
+
+
+
+**Returns:**
+
+The start time of the server。 
 
 
 
@@ -751,12 +775,25 @@ virtual void endstone::Server::setMaxPlayers (
 **Parameters:**
 
 
-* `maxPlayers` The maximum amount of concurrent players 
+* `max_players` The maximum amount of concurrent players 
 
 
 
 
         
+
+<hr>
+
+
+
+### function shutdown 
+
+```C++
+virtual void endstone::Server::shutdown () = 0
+```
+
+
+
 
 <hr>
 

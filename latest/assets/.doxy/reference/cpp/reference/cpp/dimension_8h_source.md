@@ -24,6 +24,8 @@
 
 #pragma once
 
+#include "endstone/block/block.h"
+
 namespace endstone {
 
 class Dimension {
@@ -42,6 +44,8 @@ public:
     [[nodiscard]] virtual Type getType() const = 0;
 
     [[nodiscard]] virtual Level &getLevel() const = 0;
+
+    virtual std::unique_ptr<Block> getBlockAt(int x, int y, int z) = 0;
 };
 }  // namespace endstone
 ```
