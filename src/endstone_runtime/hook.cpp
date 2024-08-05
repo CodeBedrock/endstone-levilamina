@@ -21,6 +21,10 @@
 #include <funchook/funchook.h>
 #include <spdlog/spdlog.h>
 
+#if __has_include("Windows.h")
+#include "Windows.h"
+#endif
+
 namespace endstone::detail::hook {
 
 namespace {
@@ -46,6 +50,31 @@ void *get_original(const std::string &name)
     return it->second;
 }
 
+void *try_get_pl_func(const char *name)
+{
+#if __has_include("Windows.h")
+    auto preloader = GetModuleHandleA("PreLoader.dll");
+    if (preloader) {
+        return GetProcAddress(preloader, name);
+    }
+    else {
+        return nullptr;
+    }
+#else
+    return nullptr;
+#endif
+}
+using FuncPtr = void *;
+enum Priority : int {
+    PriorityHighest = 0,
+    PriorityHigh = 100,
+    PriorityNormal = 200,
+    PriorityLow = 300,
+    PriorityLowest = 400,
+};
+int (*pl_hook)(FuncPtr target, FuncPtr detour, FuncPtr *originalFunc,
+               Priority priority) = reinterpret_cast<decltype(pl_hook)>(try_get_pl_func("pl_hook"));
+
 void install()
 {
     const auto &detours = get_detours();
@@ -55,16 +84,22 @@ void install()
         if (auto it = targets.find(name); it != targets.end()) {
             void *target = it->second;
             void *original = target;
-
-            funchook_t *hook = funchook_create();
-            int status = funchook_prepare(hook, &original, detour);
-            if (status != 0) {
-                throw std::system_error(status, hook_error_category());
+            if (pl_hook != nullptr) {
+                FuncPtr originalFunc;
+                pl_hook(target, detour, &originalFunc, PriorityNormal);
+                original = originalFunc;
             }
+            else {
+                funchook_t *hook = funchook_create();
+                int status = funchook_prepare(hook, &original, detour);
+                if (status != 0) {
+                    throw std::system_error(status, hook_error_category());
+                }
 
-            status = funchook_install(hook, 0);
-            if (status != 0) {
-                throw std::system_error(status, hook_error_category());
+                status = funchook_install(hook, 0);
+                if (status != 0) {
+                    throw std::system_error(status, hook_error_category());
+                }
             }
 
             spdlog::debug("{}: {} -> {} -> {}", name, target, detour, original);
