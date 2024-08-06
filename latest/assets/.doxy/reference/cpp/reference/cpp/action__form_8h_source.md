@@ -38,8 +38,7 @@ public:
         using OnClickCallback = std::function<void(Player *)>;
 
         Button() = default;
-        explicit Button(Message text, std::optional<std::string> icon = std::nullopt,
-                        ActionForm::Button::OnClickCallback on_click = {})
+        explicit Button(Message text, std::optional<std::string> icon = std::nullopt, OnClickCallback on_click = {})
             : text_(std::move(text)), icon_(std::move(icon)), on_click_(std::move(on_click))
         {
         }
@@ -85,19 +84,7 @@ public:
 
     using OnSubmitCallback = std::function<void(Player *, int)>;
 
-    explicit ActionForm()
-    {
-        on_submit_ = [this](Player *player, int selection) {
-            if (selection < 0 || selection >= buttons_.size()) {
-                return;
-            }
-            auto &button = buttons_[selection];
-            auto on_click = button.getOnClick();
-            if (on_click) {
-                on_click(player);
-            }
-        };
-    }
+    explicit ActionForm() = default;
 
     [[nodiscard]] Message getContent() const
     {
@@ -110,9 +97,10 @@ public:
         return *this;
     }
 
-    ActionForm &addButton(const Message &text, const std::optional<std::string> &icon = std::nullopt)
+    ActionForm &addButton(const Message &text, const std::optional<std::string> &icon = std::nullopt,
+                          Button::OnClickCallback on_click = {})
     {
-        buttons_.emplace_back(text, icon);
+        buttons_.emplace_back(text, icon, std::move(on_click));
         return *this;
     }
 
