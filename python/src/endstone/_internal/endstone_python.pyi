@@ -41,7 +41,7 @@ class ActionForm:
             ...
     def __init__(self, title: str | Translatable = '', content: str | Translatable = '', buttons: list[ActionForm.Button] | None = None, on_submit: typing.Callable[[Player, int], None] = None, on_close: typing.Callable[[Player], None] = None) -> None:
         ...
-    def add_button(self, text: str | Translatable, icon: str | None = None) -> ActionForm:
+    def add_button(self, text: str | Translatable, icon: str | None = None, on_click: typing.Callable[[Player], None] = None) -> ActionForm:
         """
         Adds a button to the form.
         """
@@ -2013,9 +2013,39 @@ class Server:
         Shutdowns the server, stopping everything.
         """
     @property
+    def average_mspt(self) -> float:
+        """
+        Gets the average milliseconds per tick (MSPT).
+        """
+    @property
+    def average_tick_usage(self) -> float:
+        """
+        Gets the average tick usage of the server.
+        """
+    @property
+    def average_tps(self) -> float:
+        """
+        Gets the average ticks per second (TPS).
+        """
+    @property
     def command_sender(self) -> ConsoleCommandSender:
         """
         Gets a CommandSender for this server.
+        """
+    @property
+    def current_mspt(self) -> float:
+        """
+        Gets the current milliseconds per tick (MSPT).
+        """
+    @property
+    def current_tick_usage(self) -> float:
+        """
+        Gets the current tick usage of the server.
+        """
+    @property
+    def current_tps(self) -> float:
+        """
+        Gets the current ticks per second (TPS).
         """
     @property
     def level(self) -> Level:
