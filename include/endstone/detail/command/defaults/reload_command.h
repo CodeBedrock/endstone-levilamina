@@ -12,17 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "endstone/detail/block/block.h"
+#pragma once
+
+#include "endstone/detail/command/endstone_command.h"
 
 namespace endstone::detail {
-EndstoneBlock::EndstoneBlock(BlockSource &block_source, BlockPos block_pos)
-    : block_source_(block_source), block_pos_(block_pos)
-{
-}
 
-std::unique_ptr<EndstoneBlock> EndstoneBlock::at(BlockSource &block_source, BlockPos block_pos)
-{
-    return std::make_unique<EndstoneBlock>(block_source, block_pos);
-}
+class ReloadCommand : public EndstoneCommand {
+public:
+    ReloadCommand();
+    bool execute(CommandSender &sender, const std::vector<std::string> &args) const override;
+};
 
 }  // namespace endstone::detail

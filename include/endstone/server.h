@@ -160,6 +160,18 @@ public:
     virtual void shutdown() = 0;
 
     /**
+     * @brief Reloads the server configuration, functions, scripts and plugins.
+     */
+    virtual void reload() = 0;
+
+    /**
+     * @brief Reload only the Minecraft data for the server.
+     *
+     * This includes functions and script files from all behaviour packs.
+     */
+    virtual void reloadData() = 0;
+
+    /**
      * @brief Broadcasts the specified message to every user with the given permission name.
      *
      * @param message message to broadcast
@@ -177,7 +189,12 @@ public:
     template <typename... Args>
     void broadcastMessage(const fmt::format_string<Args...> format, Args &&...args) const
     {
-        broadcastMessage(fmt::format(format, std::forward<Args>(args)...));
+        try {
+            broadcastMessage(fmt::format(format, std::forward<Args>(args)...));
+        }
+        catch (std::exception &e) {
+            getLogger().log(Logger::Error, e.what());
+        }
     }
 
     /**

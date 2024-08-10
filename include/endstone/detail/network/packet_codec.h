@@ -12,17 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "endstone/detail/block/block.h"
+#pragma once
+
+#include <string>
+
+#include "bedrock/core/utility/binary_stream.h"
+#include "endstone/network/packet.h"
 
 namespace endstone::detail {
-EndstoneBlock::EndstoneBlock(BlockSource &block_source, BlockPos block_pos)
-    : block_source_(block_source), block_pos_(block_pos)
-{
-}
 
-std::unique_ptr<EndstoneBlock> EndstoneBlock::at(BlockSource &block_source, BlockPos block_pos)
-{
-    return std::make_unique<EndstoneBlock>(block_source, block_pos);
-}
+namespace PacketCodec {
+
+void encode(BinaryStream &stream, Packet &packet);
+
+template <typename T, typename = std::enable_if_t<std::is_base_of_v<Packet, T> && !std::is_same_v<Packet, T>>>
+void encode(BinaryStream &stream, T &packet);
+
+};  // namespace PacketCodec
 
 }  // namespace endstone::detail

@@ -12,17 +12,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "endstone/detail/block/block.h"
+#include "endstone/detail/network/packet_codec.h"
+
+#include <stdexcept>
+
+#include <endstone/network/spawn_particle_effect_packet.h>
+#include <fmt/format.h>
 
 namespace endstone::detail {
-EndstoneBlock::EndstoneBlock(BlockSource &block_source, BlockPos block_pos)
-    : block_source_(block_source), block_pos_(block_pos)
-{
-}
 
-std::unique_ptr<EndstoneBlock> EndstoneBlock::at(BlockSource &block_source, BlockPos block_pos)
+void PacketCodec::encode(BinaryStream &stream, Packet &packet)
 {
-    return std::make_unique<EndstoneBlock>(block_source, block_pos);
+    switch (packet.getType()) {
+    case PacketType::SpawnParticleEffect:
+        encode(stream, static_cast<SpawnParticleEffectPacket &>(packet));
+        break;
+    default:
+        throw std::runtime_error(fmt::format("Packet type {} is not supported.", static_cast<int>(packet.getType())));
+    }
 }
-
 }  // namespace endstone::detail

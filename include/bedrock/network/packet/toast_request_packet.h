@@ -14,21 +14,12 @@
 
 #pragma once
 
-namespace endstone {
+#include <string>
 
-/**
- * @brief Represents the data associated with a block.
- */
-class BlockData {
+#include "bedrock/network/packet.h"
+
+class ToastRequestPacket : public Packet {
 public:
-    virtual ~BlockData() = default;
-
-    /**
-     * @brief Get the amount of light emitted by this state when in the world.
-     *
-     * @return the light emission
-     */
-    [[nodiscard]] virtual int getLightEmission() const = 0;
+    std::string title;
+    std::string content;
 };
-
-}  // namespace endstone

@@ -26,6 +26,7 @@
 #include "endstone/detail/command/command_adapter.h"
 #include "endstone/detail/command/command_usage_parser.h"
 #include "endstone/detail/command/defaults/plugins_command.h"
+#include "endstone/detail/command/defaults/reload_command.h"
 #include "endstone/detail/command/defaults/status_command.h"
 #include "endstone/detail/command/defaults/version_command.h"
 #include "endstone/detail/devtools/devtools_command.h"
@@ -34,21 +35,23 @@
 
 namespace endstone::detail {
 
-EndstoneCommandMap::EndstoneCommandMap(EndstoneServer &server) : server_(server) {}
+EndstoneCommandMap::EndstoneCommandMap(EndstoneServer &server) : server_(server)
+{
+    saveCommandRegistryState();
+    setMinecraftCommands();
+    setDefaultCommands();
+}
 
 void EndstoneCommandMap::clearCommands()
 {
     std::lock_guard lock(mutex_);
-    for (auto it = known_commands_.begin(); it != known_commands_.end();) {
-        // Only remove plugin commands
-        if (it->second->asPluginCommand() != nullptr) {
-            it->second->unregisterFrom(*this);
-            it = known_commands_.erase(it);
-        }
-        else {
-            ++it;
-        }
+    for (const auto &[name, command] : known_commands_) {
+        command->unregisterFrom(*this);
     }
+    known_commands_.clear();
+    restoreCommandRegistryState();
+    setMinecraftCommands();
+    setDefaultCommands();
 }
 
 Command *EndstoneCommandMap::getCommand(std::string name) const
@@ -66,8 +69,9 @@ Command *EndstoneCommandMap::getCommand(std::string name) const
 void EndstoneCommandMap::setDefaultCommands()
 {
     registerCommand(std::make_unique<PluginsCommand>());
-    registerCommand(std::make_unique<VersionCommand>());
+    registerCommand(std::make_unique<ReloadCommand>());
     registerCommand(std::make_unique<StatusCommand>());
+    registerCommand(std::make_unique<VersionCommand>());
 #ifdef ENDSTONE_DEVTOOLS
     registerCommand(std::make_unique<DevToolsCommand>());
 #endif
@@ -75,8 +79,10 @@ void EndstoneCommandMap::setDefaultCommands()
 
 void EndstoneCommandMap::setMinecraftCommands()
 {
-    auto &commands = server_.getMinecraftCommands();
-    auto &registry = commands.getRegistry();
+    auto &registry = server_.getMinecraftCommands().getRegistry();
+
+    // Override commands
+    registry.signatures.erase("reload");
 
     std::unordered_map<std::string, std::vector<std::string>> command_aliases;
     for (const auto &[alias, command_name] : registry.aliases) {
@@ -121,6 +127,21 @@ void EndstoneCommandMap::setMinecraftCommands()
 
     parent->recalculatePermissibles();
     root->recalculatePermissibles();
+}
+
+void EndstoneCommandMap::setPluginCommands()
+{
+    auto plugins = server_.getPluginManager().getPlugins();
+    for (auto *plugin : plugins) {
+        auto name = plugin->getName();
+        std::transform(name.begin(), name.end(), name.begin(), [](unsigned char c) { return std::tolower(c); });
+        server_.getMinecraftCommands().getRegistry().addEnumValues("PluginName", {name});
+
+        auto commands = plugin->getDescription().getCommands();
+        for (const auto &command : commands) {
+            registerCommand(std::make_unique<PluginCommand>(command, *plugin));
+        }
+    }
 }
 
 namespace {
@@ -249,22 +270,31 @@ bool EndstoneCommandMap::registerCommand(std::shared_ptr<Command> command)
     return true;
 }
 
-void EndstoneCommandMap::initialise()
+namespace {
+struct {
+    std::vector<CommandRegistry::Enum> enums;
+    std::map<std::string, std::uint32_t> enum_lookup;
+    std::map<std::string, CommandRegistry::Signature> signatures;
+    std::map<std::string, std::string> aliases;
+} gCommandRegistryState;
+}  // namespace
+
+void EndstoneCommandMap::saveCommandRegistryState() const
 {
-    setMinecraftCommands();
-    setDefaultCommands();
+    auto &registry = server_.getMinecraftCommands().getRegistry();
+    gCommandRegistryState.enums = registry.enums;
+    gCommandRegistryState.enum_lookup = registry.enum_lookup;
+    gCommandRegistryState.signatures = registry.signatures;
+    gCommandRegistryState.aliases = registry.aliases;
+}
 
-    auto plugins = server_.getPluginManager().getPlugins();
-    for (auto *plugin : plugins) {
-        auto name = plugin->getName();
-        std::transform(name.begin(), name.end(), name.begin(), [](unsigned char c) { return std::tolower(c); });
-        server_.getMinecraftCommands().getRegistry().addEnumValues("PluginName", {name});
-
-        auto commands = plugin->getDescription().getCommands();
-        for (const auto &command : commands) {
-            registerCommand(std::make_unique<PluginCommand>(command, *plugin));
-        }
-    }
+void EndstoneCommandMap::restoreCommandRegistryState() const
+{
+    auto &registry = server_.getMinecraftCommands().getRegistry();
+    registry.enums = gCommandRegistryState.enums;
+    registry.enum_lookup = gCommandRegistryState.enum_lookup;
+    registry.signatures = gCommandRegistryState.signatures;
+    registry.aliases = gCommandRegistryState.aliases;
 }
 
 }  // namespace endstone::detail

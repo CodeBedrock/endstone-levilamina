@@ -23,10 +23,11 @@
 #include "endstone/form/modal_form.h"
 #include "endstone/game_mode.h"
 #include "endstone/inventory/player_inventory.h"
+#include "endstone/network/spawn_particle_effect_packet.h"
+#include "endstone/scoreboard/scoreboard.h"
 #include "endstone/skin.h"
 #include "endstone/util/socket_address.h"
 #include "endstone/util/uuid.h"
-#include "scoreboard/scoreboard.h"
 
 namespace endstone {
 
@@ -86,6 +87,14 @@ public:
      * @param message Message to be displayed
      */
     virtual void sendTip(std::string message) const = 0;
+
+    /**
+     * @brief Sends this player a toast notification.
+     *
+     * @param title The title of the toast notification.
+     * @param content The content of the toast notification.
+     */
+    virtual void sendToast(std::string title, std::string content) const = 0;
 
     /**
      * @brief Kicks player with custom kick message.
@@ -321,10 +330,10 @@ public:
     /**
      * @brief Transfers the player to another server
      *
-     * @param address Server address to transfer the player to.
+     * @param host Server address to transfer the player to.
      * @param port Server port to transfer the player to
      */
-    virtual void transfer(std::string address, int port) const = 0;
+    virtual void transfer(std::string host, int port) const = 0;
 
     /**
      * @brief Sends a form to the player.
@@ -337,6 +346,13 @@ public:
      * @brief Closes the forms that are currently open for the player.
      */
     virtual void closeForm() = 0;
+
+    /**
+     * @brief Sends a packet to the player.
+     *
+     * @param packet The packet to be sent.
+     */
+    virtual void sendPacket(Packet &packet) = 0;
 };
 
 }  // namespace endstone

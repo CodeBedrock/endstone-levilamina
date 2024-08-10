@@ -14,44 +14,31 @@
 
 #pragma once
 
+#include <cstdint>
+#include <optional>
 #include <string>
 
-#include "endstone/command/command_sender.h"
-#include "endstone/event/event.h"
-#include "endstone/event/server/server_event.h"
+#include "endstone/network/packet.h"
+#include "endstone/network/packet_type.h"
+#include "endstone/util/vector.h"
 
 namespace endstone {
 
 /**
- * @brief Called when either the server startup or reload has completed.
+ * @brief Represents a packet for spawning a particle effect.
  */
-class ServerLoadEvent : public ServerEvent {
+class SpawnParticleEffectPacket final : public Packet {
 public:
-    enum class LoadType {
-        Startup,
-        Reload
-    };
-
-    explicit ServerLoadEvent(LoadType type) : type_(type) {}
-
-    [[nodiscard]] LoadType getType() const
+    [[nodiscard]] PacketType getType() const override
     {
-        return type_;
+        return PacketType::SpawnParticleEffect;
     }
 
-    inline static const std::string NAME = "ServerLoadEvent";
-    [[nodiscard]] std::string getEventName() const override
-    {
-        return NAME;
-    }
-
-    [[nodiscard]] bool isCancellable() const override
-    {
-        return false;
-    }
-
-private:
-    LoadType type_;
+    int dimension_id;
+    std::int64_t actor_id{-1};
+    Vector<float> position;
+    std::string effect_name;
+    std::optional<std::string> molang_variables_json;
 };
 
 }  // namespace endstone

@@ -12,17 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "endstone/detail/block/block.h"
+#include "endstone/block/block.h"
+
+#include <pybind11/pybind11.h>
+
+namespace py = pybind11;
 
 namespace endstone::detail {
-EndstoneBlock::EndstoneBlock(BlockSource &block_source, BlockPos block_pos)
-    : block_source_(block_source), block_pos_(block_pos)
-{
-}
 
-std::unique_ptr<EndstoneBlock> EndstoneBlock::at(BlockSource &block_source, BlockPos block_pos)
-{
-    return std::make_unique<EndstoneBlock>(block_source, block_pos);
-}
+void init_block(py::module_ &m, py::class_<Block> &block) {}
 
 }  // namespace endstone::detail

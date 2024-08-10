@@ -79,6 +79,7 @@ public:
     [[nodiscard]] const SocketAddress &getAddress() const override;
     void sendPopup(std::string message) const override;
     void sendTip(std::string message) const override;
+    void sendToast(std::string title, std::string content) const override;
     void kick(std::string message) const override;
     void giveExp(int amount) override;
     void giveExpLevels(int amount) override;
@@ -110,9 +111,10 @@ public:
     [[nodiscard]] std::string getDeviceOS() const override;
     [[nodiscard]] std::string getDeviceId() const override;
     [[nodiscard]] const Skin &getSkin() const override;
-    void transfer(std::string address, int port) const override;
+    void transfer(std::string host, int port) const override;
     void sendForm(FormVariant form) override;
     void closeForm() override;
+    void sendPacket(Packet &packet) override;
     void onFormClose(int form_id, PlayerFormCloseReason reason);
     void onFormResponse(int form_id, const nlohmann::json &json);
 

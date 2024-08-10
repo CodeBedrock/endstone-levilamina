@@ -12,17 +12,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "endstone/detail/block/block.h"
+#pragma once
 
-namespace endstone::detail {
-EndstoneBlock::EndstoneBlock(BlockSource &block_source, BlockPos block_pos)
-    : block_source_(block_source), block_pos_(block_pos)
-{
-}
+#include "endstone/network/packet_type.h"
 
-std::unique_ptr<EndstoneBlock> EndstoneBlock::at(BlockSource &block_source, BlockPos block_pos)
-{
-    return std::make_unique<EndstoneBlock>(block_source, block_pos);
-}
+namespace endstone {
 
-}  // namespace endstone::detail
+/**
+ * @brief Represents a packet.
+ */
+class Packet {
+public:
+    virtual ~Packet() = default;
+
+    /**
+     * @brief Gets the type of the packet.
+     *
+     * @return The type of the packet.
+     */
+    [[nodiscard]] virtual PacketType getType() const = 0;
+};
+}  // namespace endstone

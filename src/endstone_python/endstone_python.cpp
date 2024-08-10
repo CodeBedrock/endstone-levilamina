@@ -19,6 +19,7 @@
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
 
+#include "endstone/block/block.h"
 #include "endstone/color_format.h"
 #include "endstone/command/console_command_sender.h"
 #include "endstone/command/plugin_command.h"
@@ -36,6 +37,7 @@ namespace py = pybind11;
 
 namespace endstone::detail {
 void init_actor(py::module_ &, py::class_<Actor, CommandSender> &actor, py::class_<Mob, Actor> &mob);
+void init_block(py::module_ &, py::class_<Block> &block);
 void init_color_format(py::module_ &);
 void init_command(py::module &, py::class_<CommandSender, Permissible> &command_sender);
 void init_event(py::module_ &, py::class_<Event> &event, py::enum_<EventPriority> &event_priority);
@@ -44,6 +46,7 @@ void init_game_mode(py::module_ &);
 void init_inventory(py::module_ &);
 void init_level(py::module_ &);
 void init_logger(py::module_ &);
+void init_network(py::module_ &);
 void init_permissions(py::module_ &, py::class_<Permissible> &permissible, py::class_<Permission> &permission,
                       py::enum_<PermissionDefault> &permission_default);
 void init_player(py::module_ &, py::class_<Player, Mob> &player);
@@ -74,6 +77,7 @@ PYBIND11_MODULE(endstone_python, m)  // NOLINT(*-use-anonymous-namespace)
     auto permission_default =
         py::enum_<PermissionDefault>(m, "PermissionDefault", "Represents the possible default values for permissions");
     auto server = py::class_<Server>(m, "Server", "Represents a server implementation.");
+    auto block = py::class_<Block>(m, "Block", "Represents a block.");
     auto actor = py::class_<Actor, CommandSender>(m, "Actor", "Represents a base actor in the level.");
     auto mob = py::class_<Mob, Actor>(m, "Mob",
                                       "Represents a mobile entity (i.e. living entity), such as a monster or player.");
@@ -88,6 +92,8 @@ PYBIND11_MODULE(endstone_python, m)  // NOLINT(*-use-anonymous-namespace)
     init_util(m);
     init_level(m);
     init_scoreboard(m);
+    init_network(m);
+    init_block(m, block);
     init_actor(m, actor, mob);
     init_player(m, player);
     init_command(m, command_sender);
@@ -227,6 +233,8 @@ void init_server(py::class_<Server> &server)
              py::arg("unique_id").noconvert(), py::return_value_policy::reference,
              "Gets the player with the given UUID.")
         .def("shutdown", &Server::shutdown, "Shutdowns the server, stopping everything.")
+        .def("reload", &Server::reload, "Reloads the server configuration, functions, scripts and plugins.")
+        .def("reload_data", &Server::reloadData, "Reload only the Minecraft data for the server.")
         .def("broadcast", &Server::broadcast, py::arg("message"), py::arg("permission"),
              "Broadcasts the specified message to every user with the given permission name.")
         .def(
@@ -310,6 +318,8 @@ void init_player(py::module_ &m, py::class_<Player, Mob> &player)
         .def_property_readonly("address", &Player::getAddress, "Gets the socket address of this player")
         .def("send_popup", &Player::sendPopup, py::arg("message"), "Sends this player a popup message")
         .def("send_tip", &Player::sendTip, py::arg("message"), "Sends this player a tip message")
+        .def("send_toast", &Player::sendToast, py::arg("title"), py::arg("content"),
+             "Sends this player a toast notification.")
         .def("kick", &Player::kick, py::arg("message"), "Kicks player with custom kick message.")
         .def("give_exp", &Player::giveExp, py::arg("amount"), "Gives the player the amount of experience specified.")
         .def("give_exp_levels", &Player::giveExpLevels, py::arg("amount"),
@@ -350,10 +360,11 @@ void init_player(py::module_ &m, py::class_<Player, Mob> &player)
                                "Get the player's current device's operation system (OS).")
         .def_property_readonly("device_id", &Player::getDeviceId, "Get the player's current device id.")
         .def_property_readonly("skin", &Player::getSkin, "Get the player's skin.")
-        .def("transfer", &Player::transfer, "Transfers the player to another server.", py::arg("address"),
+        .def("transfer", &Player::transfer, "Transfers the player to another server.", py::arg("host"),
              py::arg("port") = 19132)
         .def("send_form", &Player::sendForm, "Sends a form to the player.", py::arg("form"))
-        .def("close_form", &Player::closeForm, "Closes the forms that are currently open for the player.");
+        .def("close_form", &Player::closeForm, "Closes the forms that are currently open for the player.")
+        .def("send_packet", &Player::sendPacket, py::arg("packet"), "Sends a packet to the player.");
 }
 
 }  // namespace endstone::detail
