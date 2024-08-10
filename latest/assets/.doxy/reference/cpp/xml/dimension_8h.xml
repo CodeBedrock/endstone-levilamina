@@ -4,6 +4,9 @@
     <compoundname>dimension.h</compoundname>
     <includes refid="block_8h" local="yes">endstone/block/block.h</includes>
     <incdepgraph>
+      <node id="3">
+        <label>string</label>
+      </node>
       <node id="2">
         <label>endstone/block/block.h</label>
         <link refid="block_8h_source"/>
@@ -15,10 +18,6 @@
         <link refid="dimension_8h"/>
         <childnode refid="2" relation="include">
         </childnode>
-      </node>
-      <node id="3">
-        <label>endstone/block/block_data.h</label>
-        <link refid="block__data_8h_source"/>
       </node>
     </incdepgraph>
     <innerclass refid="classendstone_1_1Dimension" prot="public">endstone::Dimension</innerclass>

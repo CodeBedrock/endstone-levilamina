@@ -791,6 +791,10 @@
       
         
       
+        
+      
+        
+      
     
     
       
@@ -897,6 +901,27 @@
   
   
     <li class="md-nav__item">
+      <a href="../../python/block/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Block
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../python/command/" class="md-nav__link">
         
   
@@ -986,6 +1011,27 @@
   
   <span class="md-ellipsis">
     Inventory
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../python/network/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Network
   </span>
   
 
@@ -2389,8 +2435,6 @@
 <li><strong>getActor</strong> (<a href="../classendstone_1_1ActorEvent/"><strong>endstone::ActorEvent</strong></a>)</li>
 <li><strong>getFrom</strong> (<a href="../classendstone_1_1ActorTeleportEvent/"><strong>endstone::ActorTeleportEvent</strong></a>, <a href="../classendstone_1_1PlayerTeleportEvent/"><strong>endstone::PlayerTeleportEvent</strong></a>)</li>
 <li><strong>getTo</strong> (<a href="../classendstone_1_1ActorTeleportEvent/"><strong>endstone::ActorTeleportEvent</strong></a>, <a href="../classendstone_1_1PlayerTeleportEvent/"><strong>endstone::PlayerTeleportEvent</strong></a>)</li>
-<li><strong>getData</strong> (<a href="../classendstone_1_1Block/"><strong>endstone::Block</strong></a>)</li>
-<li><strong>getLightEmission</strong> (<a href="../classendstone_1_1BlockData/"><strong>endstone::BlockData</strong></a>)</li>
 <li><strong>getMessage</strong> (<a href="../classendstone_1_1BroadcastMessageEvent/"><strong>endstone::BroadcastMessageEvent</strong></a>, <a href="../classendstone_1_1PlayerChatEvent/"><strong>endstone::PlayerChatEvent</strong></a>)</li>
 <li><strong>getRecipients</strong> (<a href="../classendstone_1_1BroadcastMessageEvent/"><strong>endstone::BroadcastMessageEvent</strong></a>)</li>
 <li><strong>getAliases</strong> (<a href="../classendstone_1_1Command/"><strong>endstone::Command</strong></a>)</li>
@@ -2402,7 +2446,7 @@
 <li><strong>getServer</strong> (<a href="../classendstone_1_1CommandSender/"><strong>endstone::CommandSender</strong></a>, <a href="../classendstone_1_1Plugin/"><strong>endstone::Plugin</strong></a>, <a href="../classendstone_1_1PluginLoader/"><strong>endstone::PluginLoader</strong></a>)</li>
 <li><strong>getDefaultRenderType</strong> (<a href="../classendstone_1_1Criteria/"><strong>endstone::Criteria</strong></a>)</li>
 <li><strong>getBlockAt</strong> (<a href="../classendstone_1_1Dimension/"><strong>endstone::Dimension</strong></a>)</li>
-<li><strong>getType</strong> (<a href="../classendstone_1_1Dimension/"><strong>endstone::Dimension</strong></a>, <a href="../classendstone_1_1ServerLoadEvent/"><strong>endstone::ServerLoadEvent</strong></a>)</li>
+<li><strong>getType</strong> (<a href="../classendstone_1_1Dimension/"><strong>endstone::Dimension</strong></a>, <a href="../classendstone_1_1Packet/"><strong>endstone::Packet</strong></a>, <a href="../classendstone_1_1ServerLoadEvent/"><strong>endstone::ServerLoadEvent</strong></a>, <a href="../classendstone_1_1SpawnParticleEffectPacket/"><strong>endstone::SpawnParticleEffectPacket</strong></a>)</li>
 <li><strong>getDefaultIndex</strong> (<a href="../classendstone_1_1Dropdown/"><strong>endstone::Dropdown</strong></a>)</li>
 <li><strong>getLabel</strong> (<a href="../classendstone_1_1Dropdown/"><strong>endstone::Dropdown</strong></a>, <a href="../classendstone_1_1Slider/"><strong>endstone::Slider</strong></a>, <a href="../classendstone_1_1TextInput/"><strong>endstone::TextInput</strong></a>, <a href="../classendstone_1_1Toggle/"><strong>endstone::Toggle</strong></a>)</li>
 <li><strong>getOptions</strong> (<a href="../classendstone_1_1Dropdown/"><strong>endstone::Dropdown</strong></a>)</li>
@@ -2646,6 +2690,8 @@
 <li><strong>runTaskTimer</strong> (<a href="../classendstone_1_1Scheduler/"><strong>endstone::Scheduler</strong></a>)</li>
 <li><strong>runTaskTimerAsync</strong> (<a href="../classendstone_1_1Scheduler/"><strong>endstone::Scheduler</strong></a>)</li>
 <li><strong>resetScores</strong> (<a href="../classendstone_1_1Scoreboard/"><strong>endstone::Scoreboard</strong></a>)</li>
+<li><strong>reload</strong> (<a href="../classendstone_1_1Server/"><strong>endstone::Server</strong></a>)</li>
+<li><strong>reloadData</strong> (<a href="../classendstone_1_1Server/"><strong>endstone::Server</strong></a>)</li>
 </ul>
 <h2 id="s">s<a class="headerlink" href="#s" title="Permanent link">&para;</a></h2>
 <ul>
@@ -2688,9 +2734,11 @@
 <li><strong>setPermission</strong> (<a href="../classendstone_1_1PermissionAttachment/"><strong>endstone::PermissionAttachment</strong></a>)</li>
 <li><strong>setRemovalCallback</strong> (<a href="../classendstone_1_1PermissionAttachment/"><strong>endstone::PermissionAttachment</strong></a>)</li>
 <li><strong>sendForm</strong> (<a href="../classendstone_1_1Player/"><strong>endstone::Player</strong></a>)</li>
+<li><strong>sendPacket</strong> (<a href="../classendstone_1_1Player/"><strong>endstone::Player</strong></a>)</li>
 <li><strong>sendPopup</strong> (<a href="../classendstone_1_1Player/"><strong>endstone::Player</strong></a>)</li>
 <li><strong>sendTip</strong> (<a href="../classendstone_1_1Player/"><strong>endstone::Player</strong></a>)</li>
 <li><strong>sendTitle</strong> (<a href="../classendstone_1_1Player/"><strong>endstone::Player</strong></a>)</li>
+<li><strong>sendToast</strong> (<a href="../classendstone_1_1Player/"><strong>endstone::Player</strong></a>)</li>
 <li><strong>setAllowFlight</strong> (<a href="../classendstone_1_1Player/"><strong>endstone::Player</strong></a>)</li>
 <li><strong>setExpLevel</strong> (<a href="../classendstone_1_1Player/"><strong>endstone::Player</strong></a>)</li>
 <li><strong>setExpProgress</strong> (<a href="../classendstone_1_1Player/"><strong>endstone::Player</strong></a>)</li>
@@ -2777,7 +2825,6 @@
 <li><strong>~ActorSpawnEvent</strong> (<a href="../classendstone_1_1ActorSpawnEvent/"><strong>endstone::ActorSpawnEvent</strong></a>)</li>
 <li><strong>~ActorTeleportEvent</strong> (<a href="../classendstone_1_1ActorTeleportEvent/"><strong>endstone::ActorTeleportEvent</strong></a>)</li>
 <li><strong>~Block</strong> (<a href="../classendstone_1_1Block/"><strong>endstone::Block</strong></a>)</li>
-<li><strong>~BlockData</strong> (<a href="../classendstone_1_1BlockData/"><strong>endstone::BlockData</strong></a>)</li>
 <li><strong>~Command</strong> (<a href="../classendstone_1_1Command/"><strong>endstone::Command</strong></a>)</li>
 <li><strong>~CommandExecutor</strong> (<a href="../classendstone_1_1CommandExecutor/"><strong>endstone::CommandExecutor</strong></a>)</li>
 <li><strong>~CommandMap</strong> (<a href="../classendstone_1_1CommandMap/"><strong>endstone::CommandMap</strong></a>)</li>
@@ -2789,6 +2836,7 @@
 <li><strong>~Level</strong> (<a href="../classendstone_1_1Level/"><strong>endstone::Level</strong></a>)</li>
 <li><strong>~Logger</strong> (<a href="../classendstone_1_1Logger/"><strong>endstone::Logger</strong></a>)</li>
 <li><strong>~Objective</strong> (<a href="../classendstone_1_1Objective/"><strong>endstone::Objective</strong></a>)</li>
+<li><strong>~Packet</strong> (<a href="../classendstone_1_1Packet/"><strong>endstone::Packet</strong></a>)</li>
 <li><strong>~Permissible</strong> (<a href="../classendstone_1_1Permissible/"><strong>endstone::Permissible</strong></a>)</li>
 <li><strong>~Player</strong> (<a href="../classendstone_1_1Player/"><strong>endstone::Player</strong></a>)</li>
 <li><strong>~PlayerChatEvent</strong> (<a href="../classendstone_1_1PlayerChatEvent/"><strong>endstone::PlayerChatEvent</strong></a>)</li>

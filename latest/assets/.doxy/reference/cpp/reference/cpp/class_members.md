@@ -31,6 +31,7 @@
 * **authors\_** ([**endstone::PluginDescription**](classendstone_1_1PluginDescription.md))
 * **addPermission** ([**endstone::PluginManager**](classendstone_1_1PluginManager.md))
 * **addObjective** ([**endstone::Scoreboard**](classendstone_1_1Scoreboard.md))
+* **actor\_id** ([**endstone::SpawnParticleEffectPacket**](classendstone_1_1SpawnParticleEffectPacket.md))
 
 
 ## b
@@ -103,6 +104,7 @@
 * **dispatchCommand** ([**endstone::Server**](classendstone_1_1Server.md))
 * **deserialize** ([**endstone::ServerListPingEvent**](classendstone_1_1ServerListPingEvent.md))
 * **data** ([**endstone::Skin::ImageData**](structendstone_1_1Skin_1_1ImageData.md), [**endstone::UUID**](classendstone_1_1UUID.md))
+* **dimension\_id** ([**endstone::SpawnParticleEffectPacket**](classendstone_1_1SpawnParticleEffectPacket.md))
 * **default\_text\_** ([**endstone::TextInput**](classendstone_1_1TextInput.md))
 * **distance** ([**endstone::Vector**](classendstone_1_1Vector.md))
 * **distanceSquared** ([**endstone::Vector**](classendstone_1_1Vector.md))
@@ -120,6 +122,7 @@
 * **enabled\_** ([**endstone::Plugin**](classendstone_1_1Plugin.md))
 * **enablePlugin** ([**endstone::PluginLoader**](classendstone_1_1PluginLoader.md), [**endstone::PluginManager**](classendstone_1_1PluginManager.md))
 * **enablePlugins** ([**endstone::PluginManager**](classendstone_1_1PluginManager.md))
+* **effect\_name** ([**endstone::SpawnParticleEffectPacket**](classendstone_1_1SpawnParticleEffectPacket.md))
 * **end** ([**endstone::UUID**](classendstone_1_1UUID.md))
 
 
@@ -149,8 +152,6 @@
 * **getActor** ([**endstone::ActorEvent**](classendstone_1_1ActorEvent.md))
 * **getFrom** ([**endstone::ActorTeleportEvent**](classendstone_1_1ActorTeleportEvent.md), [**endstone::PlayerTeleportEvent**](classendstone_1_1PlayerTeleportEvent.md))
 * **getTo** ([**endstone::ActorTeleportEvent**](classendstone_1_1ActorTeleportEvent.md), [**endstone::PlayerTeleportEvent**](classendstone_1_1PlayerTeleportEvent.md))
-* **getData** ([**endstone::Block**](classendstone_1_1Block.md))
-* **getLightEmission** ([**endstone::BlockData**](classendstone_1_1BlockData.md))
 * **getMessage** ([**endstone::BroadcastMessageEvent**](classendstone_1_1BroadcastMessageEvent.md), [**endstone::PlayerChatEvent**](classendstone_1_1PlayerChatEvent.md))
 * **getRecipients** ([**endstone::BroadcastMessageEvent**](classendstone_1_1BroadcastMessageEvent.md))
 * **Gold** ([**endstone::ColorFormat**](structendstone_1_1ColorFormat.md))
@@ -165,7 +166,7 @@
 * **getServer** ([**endstone::CommandSender**](classendstone_1_1CommandSender.md), [**endstone::Plugin**](classendstone_1_1Plugin.md), [**endstone::PluginLoader**](classendstone_1_1PluginLoader.md))
 * **getDefaultRenderType** ([**endstone::Criteria**](classendstone_1_1Criteria.md))
 * **getBlockAt** ([**endstone::Dimension**](classendstone_1_1Dimension.md))
-* **getType** ([**endstone::Dimension**](classendstone_1_1Dimension.md), [**endstone::ServerLoadEvent**](classendstone_1_1ServerLoadEvent.md))
+* **getType** ([**endstone::Dimension**](classendstone_1_1Dimension.md), [**endstone::Packet**](classendstone_1_1Packet.md), [**endstone::ServerLoadEvent**](classendstone_1_1ServerLoadEvent.md), [**endstone::SpawnParticleEffectPacket**](classendstone_1_1SpawnParticleEffectPacket.md))
 * **getDefaultIndex** ([**endstone::Dropdown**](classendstone_1_1Dropdown.md))
 * **getLabel** ([**endstone::Dropdown**](classendstone_1_1Dropdown.md), [**endstone::Slider**](classendstone_1_1Slider.md), [**endstone::TextInput**](classendstone_1_1TextInput.md), [**endstone::Toggle**](classendstone_1_1Toggle.md))
 * **getOptions** ([**endstone::Dropdown**](classendstone_1_1Dropdown.md))
@@ -389,6 +390,7 @@
 * **motd\_** ([**endstone::ServerListPingEvent**](classendstone_1_1ServerListPingEvent.md))
 * **max\_** ([**endstone::Slider**](classendstone_1_1Slider.md))
 * **min\_** ([**endstone::Slider**](classendstone_1_1Slider.md))
+* **molang\_variables\_json** ([**endstone::SpawnParticleEffectPacket**](classendstone_1_1SpawnParticleEffectPacket.md))
 
 
 ## n
@@ -463,6 +465,7 @@
 * **Position** ([**endstone::Position**](classendstone_1_1Position.md))
 * **ping\_response\_** ([**endstone::ServerListPingEvent**](classendstone_1_1ServerListPingEvent.md))
 * **port\_** ([**endstone::SocketAddress**](classendstone_1_1SocketAddress.md))
+* **position** ([**endstone::SpawnParticleEffectPacket**](classendstone_1_1SpawnParticleEffectPacket.md))
 * **placeholder\_** ([**endstone::TextInput**](classendstone_1_1TextInput.md))
 
 
@@ -491,6 +494,8 @@
 * **runTaskTimer** ([**endstone::Scheduler**](classendstone_1_1Scheduler.md))
 * **runTaskTimerAsync** ([**endstone::Scheduler**](classendstone_1_1Scheduler.md))
 * **resetScores** ([**endstone::Scoreboard**](classendstone_1_1Scoreboard.md))
+* **reload** ([**endstone::Server**](classendstone_1_1Server.md))
+* **reloadData** ([**endstone::Server**](classendstone_1_1Server.md))
 * **remote\_host\_** ([**endstone::ServerListPingEvent**](classendstone_1_1ServerListPingEvent.md))
 * **remote\_port\_** ([**endstone::ServerListPingEvent**](classendstone_1_1ServerListPingEvent.md))
 
@@ -537,9 +542,11 @@
 * **setPermission** ([**endstone::PermissionAttachment**](classendstone_1_1PermissionAttachment.md))
 * **setRemovalCallback** ([**endstone::PermissionAttachment**](classendstone_1_1PermissionAttachment.md))
 * **sendForm** ([**endstone::Player**](classendstone_1_1Player.md))
+* **sendPacket** ([**endstone::Player**](classendstone_1_1Player.md))
 * **sendPopup** ([**endstone::Player**](classendstone_1_1Player.md))
 * **sendTip** ([**endstone::Player**](classendstone_1_1Player.md))
 * **sendTitle** ([**endstone::Player**](classendstone_1_1Player.md))
+* **sendToast** ([**endstone::Player**](classendstone_1_1Player.md))
 * **setAllowFlight** ([**endstone::Player**](classendstone_1_1Player.md))
 * **setExpLevel** ([**endstone::Player**](classendstone_1_1Player.md))
 * **setExpProgress** ([**endstone::Player**](classendstone_1_1Player.md))
@@ -669,7 +676,6 @@
 * **~ActorSpawnEvent** ([**endstone::ActorSpawnEvent**](classendstone_1_1ActorSpawnEvent.md))
 * **~ActorTeleportEvent** ([**endstone::ActorTeleportEvent**](classendstone_1_1ActorTeleportEvent.md))
 * **~Block** ([**endstone::Block**](classendstone_1_1Block.md))
-* **~BlockData** ([**endstone::BlockData**](classendstone_1_1BlockData.md))
 * **~Command** ([**endstone::Command**](classendstone_1_1Command.md))
 * **~CommandExecutor** ([**endstone::CommandExecutor**](classendstone_1_1CommandExecutor.md))
 * **~CommandMap** ([**endstone::CommandMap**](classendstone_1_1CommandMap.md))
@@ -681,6 +687,7 @@
 * **~Level** ([**endstone::Level**](classendstone_1_1Level.md))
 * **~Logger** ([**endstone::Logger**](classendstone_1_1Logger.md))
 * **~Objective** ([**endstone::Objective**](classendstone_1_1Objective.md))
+* **~Packet** ([**endstone::Packet**](classendstone_1_1Packet.md))
 * **~Permissible** ([**endstone::Permissible**](classendstone_1_1Permissible.md))
 * **~Player** ([**endstone::Player**](classendstone_1_1Player.md))
 * **~PlayerChatEvent** ([**endstone::PlayerChatEvent**](classendstone_1_1PlayerChatEvent.md))

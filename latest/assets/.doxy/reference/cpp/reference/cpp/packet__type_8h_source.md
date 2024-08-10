@@ -1,10 +1,10 @@
 
 
-# File block\_data.h
+# File packet\_type.h
 
-[**File List**](files.md) **>** [**block**](dir_faca67fc60a7463eb1bd30eabe023cf1.md) **>** [**block\_data.h**](block__data_8h.md)
+[**File List**](files.md) **>** [**endstone**](dir_6cf277b678674f97c7a2b6b3b2447b33.md) **>** [**network**](dir_5fb49eba5df98b849987b1937230be97.md) **>** [**packet\_type.h**](packet__type_8h.md)
 
-[Go to the documentation of this file](block__data_8h.md)
+[Go to the documentation of this file](packet__type_8h.md)
 
 
 ```C++
@@ -25,14 +25,9 @@
 #pragma once
 
 namespace endstone {
-
-class BlockData {
-public:
-    virtual ~BlockData() = default;
-
-    [[nodiscard]] virtual int getLightEmission() const = 0;
+enum class PacketType {
+    SpawnParticleEffect = 118
 };
-
 }  // namespace endstone
 ```
 
